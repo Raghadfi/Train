@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>قطار الحفظ</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff8e7;--card:#fff;--ink:#3b2a14;--mut:#7a6648;--pri:#2e9e6b;--pri-ink:#fff;--acc:#f5a623;--line:#ecd9ae;--sky1:#9fdcff;--sky2:#e9f8ff;--hill:#7fcf8a;--hill2:#5fb56e;--rail:#8a6a45;--wt:#2b1b0a;--c1:#ff9a76;--c2:#6cc7f2;--c3:#b3dd7c;--c4:#c98be0;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17130c;--card:#241d12;--ink:#f7ecd4;--mut:#bfae8a;--pri:#3cc08a;--pri-ink:#0b1d14;--acc:#ffc14d;--line:#3a2f1c;--sky1:#14284a;--sky2:#2a3f6b;--hill:#2d6b43;--hill2:#22553a;--rail:#a98a63;--wt:#fff;--c1:#b5502f;--c2:#2a7fa8;--c3:#5f8f2e;--c4:#8a3f9a}}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:'Amiri','Traditional Arabic',serif;font-size:20px;min-height:100vh}
+.w{max-width:620px;margin:0 auto;padding:14px}
+.top{display:flex;justify-content:space-between;align-items:center}
+h1{font-size:24px;margin:0}
+.stars{background:var(--card);border:2px solid var(--acc);border-radius:20px;padding:2px 12px;font-weight:700}
+.tabs{display:flex;gap:8px;margin:10px 0}
+.tabs button{flex:1;font:inherit;font-weight:700;padding:10px;border-radius:14px;border:2px solid var(--line);background:var(--card);color:var(--ink)}
+.tabs{gap:6px}.tabs button{font-size:16px;padding:10px 2px}.tabs button.on{background:var(--pri);color:var(--pri-ink);border-color:var(--pri)}
+.mut{color:var(--mut);font-size:17px;margin:6px 0}
+.scene{position:relative;height:290px;border-radius:20px;overflow:hidden;background:linear-gradient(var(--sky1),var(--sky2));border:2px solid var(--line)}
+.cl{position:absolute;font-size:40px;opacity:.85;animation:drift 30s linear infinite}
+@keyframes drift{from{transform:translateX(-120px)}to{transform:translateX(700px)}}
+.hills{position:absolute;bottom:34px;left:0;right:0;height:90px;background:radial-gradient(ellipse 60% 100% at 20% 100%,var(--hill) 60%,transparent 61%),radial-gradient(ellipse 70% 100% at 75% 100%,var(--hill2) 60%,transparent 61%)}
+.ground{position:absolute;bottom:0;left:0;right:0;height:38px;background:var(--hill2)}
+.rail{position:absolute;bottom:34px;left:0;right:0;height:8px;background:var(--rail);border-top:3px solid #555}
+.ties{position:absolute;bottom:14px;left:0;right:0;height:14px;background:repeating-linear-gradient(90deg,var(--rail) 0 14px,transparent 14px 34px)}
+.run .ties{animation:ties .25s linear infinite}
+@keyframes ties{to{background-position:-34px 0}}
+.wrap{position:absolute;left:0;right:0;bottom:36px;overflow-x:auto;overflow-y:hidden;padding:60px 12px 14px;-webkit-overflow-scrolling:touch}
+.wrap.ns{overflow:hidden}
+.train{display:flex;align-items:flex-end;gap:16px;width:max-content}
+.train.go{animation:go 4s ease-in forwards}
+.train.in{animation:arrive 1.8s ease-out}
+@keyframes go{0%{transform:translateX(0)}12%{transform:translateX(-18px)}100%{transform:translateX(var(--d))}}
+@keyframes arrive{from{transform:translateX(calc(var(--d) * -1))}to{transform:translateX(0)}}
+.eng{position:relative;font-size:84px;line-height:1;transform:scaleX(-1);padding-bottom:4px}
+.sm{position:absolute;top:-6px;right:70px;font-size:30px;opacity:0;animation:puff 2s ease-out infinite}
+.sm:nth-child(2){animation-delay:.7s}.sm:nth-child(3){animation-delay:1.4s}
+@keyframes puff{0%{opacity:.9;transform:translate(0,0) scale(.5)}100%{opacity:0;transform:translate(-30px,-50px) scale(1.4)}}
+.wag{position:relative;min-width:160px;max-width:230px;padding:10px 12px 18px;border-radius:14px;color:var(--wt);text-align:center;cursor:pointer;border:3px solid transparent;animation:bob .7s ease-in-out infinite alternate}
+.wag:nth-child(4n+2){background:var(--c1)}.wag:nth-child(4n+3){background:var(--c2)}.wag:nth-child(4n+4){background:var(--c3)}.wag:nth-child(4n+1){background:var(--c4)}
+.wag::after{content:"";position:absolute;left:100%;bottom:14px;width:16px;height:6px;background:#555}
+.wrap{overflow:hidden}.wag:last-child::after{display:none}.wag::before{content:"";position:absolute;right:100%;bottom:14px;width:16px;height:6px;background:#555}.wag{min-width:190px;max-width:250px;transition:opacity .4s}.wag:not(.cur){opacity:.6}.wag.cur{scale:1.1}.wag{animation:none}.wag.hit{animation:hit .4s}.cl{animation-play-state:paused}.run .cl{animation-play-state:running}.wh{animation:none}.run .wh{animation:spin .4s linear infinite}.sm{animation:none}.run .sm{animation:puff 1.2s ease-out infinite}.rd{width:100%;font:inherit;font-size:26px;font-weight:700;padding:16px;border:0;border-radius:18px;background:var(--acc);color:#3b2a14;margin-top:10px}
+.wag.hit{animation:hit .4s}
+.wag.ok{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc)}
+@keyframes bob{to{transform:translateY(-3px)}}
+@keyframes hit{40%{transform:translateY(-18px) scale(1.06)}}
+.vt{font-size:24px;line-height:1.7;margin:0}
+.dots{display:flex;gap:6px;justify-content:center;margin-top:2px}
+.d{width:14px;height:14px;border-radius:50%;border:2px solid var(--wt);display:inline-block}
+.d.f{background:var(--acc);border-color:var(--acc)}
+.wh{position:absolute;bottom:-12px;width:26px;height:26px;border-radius:50%;background:conic-gradient(#333 0 25%,#777 0 50%,#333 0 75%,#777 0);border:3px solid #222;animation:spin 2s linear infinite}
+.wh.a{right:18px}.wh.b{left:18px}
+.go .wh,.go .wag{animation-duration:.25s}
+@keyframes spin{to{transform:rotate(360deg)}}
+.pop{animation:pp .4s}
+@keyframes pp{40%{transform:scale(1.25)}}
+.fly{position:fixed;pointer-events:none;font-size:28px;z-index:99;animation:fly 1s ease-out forwards}
+@keyframes fly{to{transform:translate(var(--dx),var(--dy)) rotate(360deg) scale(.4);opacity:0}}
+.btn{font:inherit;font-weight:700;border:0;border-radius:14px;padding:10px 16px;background:var(--pri);color:var(--pri-ink);margin-top:10px;width:100%}
+</style>
+</head>
+<body>
+<div class="w">
+  <div class="top"><h1>🚂 قطار الحفظ <small style="font-size:12px;color:var(--mut)">v4</small></h1><div class="stars" id="stars">⭐ 0</div></div>
+  <div class="tabs" id="tabs"></div>
+  <p class="mut">اقرأ الآية المضيئة بصوت عالٍ واضغط عليها بعد كل مرة، وكل ضغطة نجمة ⭐. بعد ٣ مرات بيمشي القطار عربة وبتجي اللي بعدها!</p>
+  <p class="mut" id="prog"></p>
+  <div class="scene" id="scene">
+    <span class="cl" style="top:14px;animation-delay:-5s">☁️</span>
+    <span class="cl" style="top:50px;animation-delay:-18s;font-size:30px">☁️</span>
+    <div class="hills"></div><div class="ground"></div><div class="ties"></div><div class="rail"></div>
+    <div class="wrap" id="wrap"><div class="train" id="train"></div></div>
+  </div>
+  <button class="rd" id="rd" onclick="tapCur()">🔁 قرأتها!</button>
+  <button class="btn" onclick="trip()">📯 توت توت! (يمشي القطار)</button>
+  <button class="btn" id="mic" onclick="listen()">🎤 اقرأ والقطار يمشي</button>
+  <p class="mut" id="say"></p>
+</div>
+<script>
+const S={
+ t:{name:'التكاثر',v:['أَلْهَاكُمُ التَّكَاثُرُ','حَتَّىٰ زُرْتُمُ الْمَقَابِرَ','كَلَّا سَوْفَ تَعْلَمُونَ','ثُمَّ كَلَّا سَوْفَ تَعْلَمُونَ','كَلَّا لَوْ تَعْلَمُونَ عِلْمَ الْيَقِينِ','لَتَرَوُنَّ الْجَحِيمَ','ثُمَّ لَتَرَوُنَّهَا عَيْنَ الْيَقِينِ','ثُمَّ لَتُسْأَلُنَّ يَوْمَئِذٍ عَنِ النَّعِيمِ']},
+ q:{name:'القارعة',v:['الْقَارِعَةُ','مَا الْقَارِعَةُ','وَمَا أَدْرَاكَ مَا الْقَارِعَةُ','يَوْمَ يَكُونُ النَّاسُ كَالْفَرَاشِ الْمَبْثُوثِ','وَتَكُونُ الْجِبَالُ كَالْعِهْنِ الْمَنفُوشِ','فَأَمَّا مَن ثَقُلَتْ مَوَازِينُهُ','فَهُوَ فِي عِيشَةٍ رَّاضِيَةٍ','وَأَمَّا مَنْ خَفَّتْ مَوَازِينُهُ','فَأُمُّهُ هَاوِيَةٌ','وَمَا أَدْرَاكَ مَا هِيَهْ','نَارٌ حَامِيَةٌ']},
+ z:{name:'الزلزلة',v:['إِذَا زُلْزِلَتِ الْأَرْضُ زِلْزَالَهَا','وَأَخْرَجَتِ الْأَرْضُ أَثْقَالَهَا','وَقَالَ الْإِنسَانُ مَا لَهَا','يَوْمَئِذٍ تُحَدِّثُ أَخْبَارَهَا','بِأَنَّ رَبَّكَ أَوْحَىٰ لَهَا','يَوْمَئِذٍ يَصْدُرُ النَّاسُ أَشْتَاتًا لِّيُرَوْا أَعْمَالَهُمْ','فَمَن يَعْمَلْ مِثْقَالَ ذَرَّةٍ خَيْرًا يَرَهُ','وَمَن يَعْمَلْ مِثْقَالَ ذَرَّةٍ شَرًّا يَرَهُ']},
+ y:{name:'العاديات',v:['وَالْعَادِيَاتِ ضَبْحًا','فَالْمُورِيَاتِ قَدْحًا','فَالْمُغِيرَاتِ صُبْحًا','فَأَثَرْنَ بِهِ نَقْعًا','فَوَسَطْنَ بِهِ جَمْعًا','إِنَّ الْإِنسَانَ لِرَبِّهِ لَكَنُودٌ','وَإِنَّهُ عَلَىٰ ذَٰلِكَ لَشَهِيدٌ','وَإِنَّهُ لِحُبِّ الْخَيْرِ لَشَدِيدٌ','أَفَلَا يَعْلَمُ إِذَا بُعْثِرَ مَا فِي الْقُبُورِ','وَحُصِّلَ مَا فِي الصُّدُورِ','إِنَّ رَبَّهُمْ بِهِمْ يَوْمَئِذٍ لَّخَبِيرٌ']}
+};
+let tx=0,cur='t',idx=0,stars=0,reps=[],busy=false,timer=null,ac=null;
+try{stars=+localStorage.getItem('hifz_stars')||0}catch(e){}
+const $=id=>document.getElementById(id);
+const ar=n=>String(n).replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]);
+function add(n){stars+=n;const s=$('stars');s.classList.remove('pop');void s.offsetWidth;s.classList.add('pop');s.textContent='⭐ '+ar(stars);try{localStorage.setItem('hifz_stars',stars)}catch(e){}}
+function tone(f,t,d,type,vol){try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();const o=ac.createOscillator(),g=ac.createGain();o.type=type||'sine';o.frequency.value=f;o.connect(g);g.connect(ac.destination);const s=ac.currentTime+t,v=vol||.2;g.gain.setValueAtTime(0.0001,s);g.gain.exponentialRampToValueAtTime(v,s+0.02);g.gain.exponentialRampToValueAtTime(0.0001,s+d);o.start(s);o.stop(s+d+0.05)}catch(e){}}
+function toot(){tone(349,0,.25,'sawtooth',.08);tone(440,0,.25,'sawtooth',.08);tone(349,.32,.45,'sawtooth',.08);tone(440,.32,.45,'sawtooth',.08)}
+function chug(){try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();const n=ac.sampleRate*.09,b=ac.createBuffer(1,n,ac.sampleRate),d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*(1-i/n);const s=ac.createBufferSource(),f=ac.createBiquadFilter(),g=ac.createGain();f.type='lowpass';f.frequency.value=500;g.gain.value=.5;s.buffer=b;s.connect(f);f.connect(g);g.connect(ac.destination);s.start()}catch(e){}}
+function star(){[784,988,1175,1568].forEach((f,i)=>tone(f,i*.1,.25,'triangle'))}
+function burst(el){const r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;for(let i=0;i<10;i++){const s=document.createElement('div');s.className='fly';s.textContent=['⭐','✨','🌟'][i%3];s.style.left=cx+'px';s.style.top=cy+'px';s.style.setProperty('--dx',(Math.random()*300-150)+'px');s.style.setProperty('--dy',(-60-Math.random()*200)+'px');document.body.appendChild(s);setTimeout(()=>s.remove(),1000)}}
+function dots(c){return [0,1,2].map(i=>`<i class="d ${i<c?'f':''}"></i>`).join('')}
+function build(){
+ const v=S[cur].v;reps=v.map(()=>0);
+ $('tabs').innerHTML=Object.keys(S).map(k=>`<button class="${k===cur?'on':''}" onclick="setS('${k}')">${S[k].name}</button>`).join('');
+ $('stars').textContent='⭐ '+ar(stars);
+ $('train').innerHTML=`<div class="eng" onclick="toot()"><span class="sm">☁️</span><span class="sm">☁️</span><span class="sm">☁️</span>🚂</div>`+v.map((t,i)=>`<div class="wag" id="w${i}" style="animation-delay:${i*.12}s" onclick="tap(${i},this)"><p class="vt">${t} ﴿${ar(i+1)}﴾</p><div class="dots" id="d${i}">${dots(0)}</div><span class="wh a"></span><span class="wh b"></span></div>`).join('');
+ $('wrap').scrollLeft=0;idx=0;show();align(false);
+}
+function setS(k){if(busy)return;cur=k;build()}
+function tap(i,el){
+ if(busy)return;
+ el.classList.remove('hit');void el.offsetWidth;el.classList.add('hit');
+ if(reps[i]>=3||i!==idx){toot();return}
+ reps[i]++;$('d'+i).innerHTML=dots(reps[i]);
+ add(1);burst(el);if(reps[i]===3){el.classList.add('ok');star();
+  setTimeout(step,1000)}
+ else{tone(523,0,.1,'triangle',.25);tone(784,.1,.2,'triangle',.25)}
+}
+function depart(full){
+ busy=true;const tr=$('train'),sc=$('scene'),wr=$('wrap');
+ const d=window.innerWidth+tr.scrollWidth+120;tr.style.setProperty('--d',d+'px');
+ wr.classList.add('ns');sc.classList.add('run');tr.classList.add('go');toot();
+ timer=setInterval(chug,250);
+ setTimeout(()=>{clearInterval(timer);tr.classList.remove('go');if(full){build();add(2)}tr.classList.add('in');toot();
+  setTimeout(()=>{tr.classList.remove('in');sc.classList.remove('run');wr.classList.remove('ns');busy=false},1850)},4000);
+}
+function show(){const v=S[cur].v;document.querySelectorAll('.wag').forEach((w,i)=>w.classList.toggle('cur',i===idx));$('prog').textContent='الآية '+ar(idx+1)+' من '+ar(v.length)}
+function stepOld(){
+ busy=true;const tr=$('train'),sc=$('scene');
+ tr.style.setProperty('--d',(window.innerWidth+tr.scrollWidth+80)+'px');tr.style.animationDuration='2s';
+ sc.classList.add('run');tr.classList.add('go');toot();timer=setInterval(chug,250);
+ setTimeout(()=>{clearInterval(timer);tr.classList.remove('go');idx++;
+  if(idx>=reps.length){add(2);star();idx=0;reps=reps.map(()=>0);document.querySelectorAll('.dots').forEach(d=>d.innerHTML=dots(0));document.querySelectorAll('.wag').forEach(w=>w.classList.remove('ok'))}
+  show();tr.style.animationDuration='1.2s';tr.classList.add('in');
+  setTimeout(()=>{tr.classList.remove('in');tr.style.animationDuration='';sc.classList.remove('run');busy=false;toot()},1250)},2000);
+}
+function align(anim,dur){const tr=$('train'),w=$('w'+idx),s=$('wrap').getBoundingClientRect(),r=w.getBoundingClientRect();tr.style.transition=anim?'transform '+(dur||1.3)+'s ease-in-out':'none';tx+=(s.left+s.width/2)-(r.left+r.width/2);tr.style.transform='translateX('+tx+'px)'}
+function step(){
+ busy=true;const tr=$('train'),sc=$('scene');
+ sc.classList.add('run');toot();timer=setInterval(chug,250);idx++;
+ if(idx<reps.length){show();align(true);setTimeout(()=>{clearInterval(timer);sc.classList.remove('run');busy=false;toot()},1400);return}
+ const far=window.innerWidth+tr.scrollWidth+100;
+ tr.style.transition='transform 3s ease-in';tx+=far;tr.style.transform='translateX('+tx+'px)';
+ setTimeout(()=>{
+  add(2);star();idx=0;reps=reps.map(()=>0);
+  document.querySelectorAll('.dots').forEach(d=>d.innerHTML=dots(0));
+  document.querySelectorAll('.wag').forEach(w=>w.classList.remove('ok'));
+  show();tr.style.transition='none';tx-=2*far;tr.style.transform='translateX('+tx+'px)';void tr.offsetWidth;align(true,2.2);
+  setTimeout(()=>{clearInterval(timer);sc.classList.remove('run');busy=false;toot()},2300)},3000);
+}
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{if(!busy)align(false)});
+function tapCur(){if(!busy&&idx<reps.length)tap(idx,$('w'+idx))}
+function trip(){if(busy)return;toot();const sc=$('scene');sc.classList.add('run');const t=setInterval(chug,250);setTimeout(()=>{clearInterval(t);sc.classList.remove('run')},1500)}
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+let rec=null,on=false,vchug=null,calm=null;
+function norm(s){return s.replace(/[\u064B-\u065F\u0670\u06D6-\u06ED\u0640]/g,'').replace(/[أإآٱ]/g,'ا').replace(/ى/g,'ي').replace(/ة/g,'ه').replace(/ؤ/g,'و').replace(/ئ/g,'ي').replace(/[^\u0621-\u064A ]/g,' ').trim()}
+function moving(m){const sc=$('scene');if(m){sc.classList.add('run');if(!vchug)vchug=setInterval(chug,250)}else{if(!busy)sc.classList.remove('run');clearInterval(vchug);vchug=null}}
+function heard(txt,fin){
+ if(busy)return;
+ $('say').textContent='سمعت: '+txt;
+ moving(true);clearTimeout(calm);calm=setTimeout(()=>moving(false),1400);
+ if(!fin)return;
+ const i=reps.findIndex(x=>x<3);if(i<0)return;
+ const hw=new Set(norm(txt).split(/\s+/)),vw=norm(S[cur].v[i]).split(/\s+/).filter(Boolean);
+ const hit=vw.filter(w=>hw.has(w)).length;
+ if(hit/vw.length>=.6)tap(i,$('w'+i));
+}
+function listen(){
+ if(!SR){$('say').textContent='هالمتصفح ما بيدعم التعرف على الصوت. جرّب Chrome أو Safari.';return}
+ if(on){on=false;try{rec.stop()}catch(e){}$('mic').textContent='🎤 اقرأ والقطار يمشي';moving(false);return}
+ rec=new SR();rec.lang='ar-SA';rec.continuous=true;rec.interimResults=true;
+ rec.onresult=e=>{for(let k=e.resultIndex;k<e.results.length;k++)heard(e.results[k][0].transcript,e.results[k].isFinal)};
+ rec.onerror=e=>{if(e.error==='not-allowed'||e.error==='service-not-allowed'){on=false;$('mic').textContent='🎤 اقرأ والقطار يمشي';$('say').textContent='ما انسمح بالميكروفون. اسمح له، أو افتح الرابط مباشرة بالمتصفح.'}};
+ rec.onend=()=>{if(on){try{rec.start()}catch(e){}}};
+ on=true;$('mic').textContent='⏹️ وقّف الميكروفون';$('say').textContent='🎤 اقرأ الآية بصوت واضح...';
+ try{rec.start()}catch(e){}
+}
+build();
+</script>
+</body>
+</html>
